@@ -43,4 +43,26 @@ async def read_root(request: Request):
     return templates.TemplateResponse("resume.html", {"request": request, "title": "Resume"})
 
 
+@app.exception_handler(404)
+async def custom_404_html(request: Request, exc):
+    return HTMLResponse(
+        status_code=404,
+        content="""
+        <html>
+            <head><title>Page Not Found</title></head>
+            <body>
+                <h1>404 - Not Found</h1>
+                <p>The page you are looking for does not exist.</p>
+            </body>
+        </html>
+        """,
+    )
+
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    """
+    Route to render the index.html template.
+    """
+    return templates.TemplateResponse("index.html", {"request": request, "title": "Badrinath"})
 
